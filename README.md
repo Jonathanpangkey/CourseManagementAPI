@@ -30,11 +30,11 @@ Anda dapat menggunakan Postman untuk menguji API. Berikut adalah API yang tersed
     PUT /courses/{id} Untuk memperbaruhi kelas.
     DELETE /courses/{id} Untuk menghapus kelas.
 ## 4. Peserta
-    POST /courses Untuk menambahkan peserta.
-    GET /courses Untuk melihat semua peserta.
-    GET /courses/{id} Untuk melihat satu peserta.
-    PUT /courses/{id} Untuk memperbaruhi peserta.
-    DELETE /courses/{id} Untuk menghapus peserta.
+    POST /users Untuk menambahkan peserta.
+    GET /users Untuk melihat semua peserta.
+    GET /users/{id} Untuk melihat satu peserta.
+    PUT /users/{id} Untuk memperbaruhi peserta.
+    DELETE /users/{id} Untuk menghapus peserta.
 ## 5. Akses kelas peserta
     POST /usercourse Untuk menambahkan akses kelas peserta.
     GET /usercourse Untuk melihat semua akses kelas peserta.
