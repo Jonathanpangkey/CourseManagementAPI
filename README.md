@@ -13,7 +13,10 @@ Untuk menjalankan proyek ini, Anda perlu melakukan hal berikut:
 4. Jalankan program dengan perintah node index atau jika memiliki nodemon nodemon index.
 5. Server akan berjalan di http://localhost:5000.
 
-Anda dapat menggunakan Postman untuk menguji API. Berikut adalah API yang tersedia:
+Anda dapat menggunakan Postman untuk menguji API. 
+- Silahkan import link postman collection berikut untuk melihat dokumentasinya 
+   https://api.postman.com/collections/24529439-7574ee51-4a9c-4686-ab98-8828695ea892?access_key=PMAT-01GSFQB6SBDZ6EK4KRJS8441J9
+Berikut adalah API yang tersedia:
 ## 1. Registration dan Login admin
     POST /admin/register Untuk register.
     POST /admin/login untuk login.
