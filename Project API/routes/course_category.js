@@ -6,68 +6,64 @@ const mongoose = require("mongoose");
 const ClassCategory = require("../models/ClassCategory");
 
 // Read semua kategori
-router.get("/", (req, res) => {
-  ClassCategory.find()
-    .then((classCategories) => res.json(classCategories))
-    .catch((err) =>
-      res.status(404).json({ message: "No class categories found" })
-    );
+router.get("/", async (req, res) => {
+  try {
+    const classCategories = await ClassCategory.find();
+    res.json(classCategories);
+  } catch (err) {
+    res.status(404).json({ message: "No class categories found" });
+  }
 });
 
 // Read salah satu kategori berdasarkan ID
-router.get("/:id", (req, res) => {
-  ClassCategory.findById(req.params.id)
-    .then((classCategory) => res.json(classCategory))
-    .catch((err) =>
-      res.status(404).json({ message: "Class category not found" })
-    );
+router.get("/:id", async (req, res) => {
+  try {
+    const classCategory = await ClassCategory.findById(req.params.id);
+    if (classCategory) {
+      res.json(classCategory);
+    } else {
+      res.status(404).json({ message: "Class category not found" });
+    }
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
 });
 
 // Menambahkan kategori
-router.post("/add", (req, res) => {
+router.post("/add", async (req, res) => {
   const newClassCategory = new ClassCategory({
     name: req.body.name,
   });
 
-  newClassCategory
-    .save()
-    .then((classCategory) => res.json(classCategory))
-    .catch((err) =>
-      res.status(400).json({ message: err })
-    );
+  try {
+    const classCategory = await newClassCategory.save();
+    res.json(classCategory);
+  } catch (err) {
+    res.status(400).json({ message: err });
+  }
 });
 
 // Mengupdate kategori
-router.put("/:id", (req, res) => {
-  ClassCategory.findById(req.params.id)
-    .then((classCategory) => {
-      classCategory.name = req.body.name;
-      classCategory
-        .save()
-        .then((updatedClassCategory) => res.json(updatedClassCategory))
-        .catch((err) =>
-          res.status(400).json({ message: err })
-        );
-    })
-    .catch((err) =>
-      res.status(404).json({ message: "Class category not found" })
-    );
+router.put("/:id", async (req, res) => {
+  try {
+    const classCategory = await ClassCategory.findById(req.params.id);
+    classCategory.name = req.body.name;
+    const updatedClassCategory = await classCategory.save();
+    res.json(updatedClassCategory);
+  } catch (err) {
+    res.status(404).json({ message: "Class category not found" });
+  }
 });
 
 // Menghapus kategori
-router.delete("/:id", (req, res) => {
-  ClassCategory.findById(req.params.id)
-    .then((classCategory) => {
-      classCategory
-        .remove()
-        .then(() => res.json({ message: "Class category deleted" }))
-        .catch((err) =>
-          res.status(400).json({ message: err})
-        );
-    })
-    .catch((err) =>
-      res.status(404).json({ message: "Class category not found" })
-    );
+router.delete("/:id", async (req, res) => {
+  try {
+    const classCategory = await ClassCategory.findById(req.params.id);
+    await classCategory.remove();
+    res.json({ message: "Class category deleted" });
+  } catch (err) {
+    res.status(404).json({ message: "Class category not found" });
+  }
 });
 
 module.exports = router;

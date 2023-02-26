@@ -1,92 +1,90 @@
 const express = require("express");
-
 const Class = require("../models/Class");
 const ClassCategory = require("../models/ClassCategory");
-
 const router = express.Router();
 
-// Membuat kelas baru
-router.post("/", (req, res) => {
-  const { title, classCategoryId } = req.body;
-  ClassCategory.findById(classCategoryId)
-    .then((classCategory) => {
-      if (!classCategory) {
-        return res
-          .status(404)
-          .json({ message: "Class category with that id not found" });
-      }
-      const newClass = new Class({
-        title,
-        classCategory: classCategory._id,
-      });
-      return newClass.save();
-    })
-    .then((classData) => {
-      res.status(201).json({
-        message: "Class created successfully",
-        classData,
-      });
-    })
-    .catch((error) => {
-      res.status(500).json({ error });
+// Create a new class
+router.post("/", async (req, res) => {
+  try {
+    const { title, classCategoryId } = req.body;
+    const classCategory = await ClassCategory.findById(classCategoryId);
+    if (!classCategory) {
+      return res
+        .status(404)
+        .json({ message: "Class category with that id not found" });
+    }
+    const newClass = new Class({
+      title,
+      classCategory: classCategory._id,
     });
+    const savedClass = await newClass.save();
+    res.status(201).json({
+      message: "Class created successfully",
+      classData: savedClass,
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).send({ message: err.message });
+  }
 });
 
-// Read semua kelas
-router.get("/", (req, res) => {
-  Class.find()
-    .populate("classCategory")
-    .then((classes) => {
-      res.status(200).json({ classes });
-    })
-    .catch((error) => {
-      res.status(500).json({ error });
-    });
+// Read all classes
+router.get("/", async (req, res) => {
+  try {
+    const classes = await Class.find().populate("classCategory");
+    res.status(200).json({ classes });
+  } catch (err) {
+    console.log(err);
+    res.status(500).send({ message: err.message });
+  }
 });
 
-// Read kelas berdasarkan ID
-router.get("/:id", (req, res) => {
-  const { id } = req.params;
-  Class.findById(id)
-    .populate("classCategory")
-    .then((classData) => {
-      if (!classData) {
-        return res.status(404).json({ message: "Class not found" });
-      }
-      res.status(200).json({ classData });
-    })
-    .catch((error) => {
-      res.status(500).json({ error });
-    });
+// Read class by ID
+router.get("/:id", async (req, res) => {
+  try {
+    const classData = await Class.findById(req.params.id).populate(
+      "classCategory"
+    );
+    if (!classData) {
+      return res.status(404).json({ message: "Class not found" });
+    }
+    res.status(200).json({ classData });
+  } catch (err) {
+    console.log(err);
+    res.status(500).send({ message: err.message });
+  }
 });
+
 
 // Update kelas berdasarkan ID
-router.put("/:id", (req, res) => {
-  const { title, classCategory } = req.body;
-  Class.findOneAndUpdate(
-    { _id: req.params.id },
-    { $set: { title, classCategory } },
-    { new: true }
-  )
-    .then((classUpdate) => {
-      res.send({ classUpdate });
-    })
-    .catch((error) => {
-      res.status(500).send({ message: error.message });
-    });
+router.put("/:id", async (req, res) => {
+  try {
+    const { title, classCategory } = req.body;
+    const classUpdate = await Class.findOneAndUpdate(
+      { _id: req.params.id },
+      { $set: { title, classCategory } },
+      { new: true }
+    );
+    if (!classUpdate) {
+      return res.status(404).send({message : "Course not found"});
+    }
+    res.send({ classUpdate });
+  } catch (error) {
+    res.status(500).send({ message: error.message });
+  }
 });
 
 // Menghapus kelas berdasarkan ID
-router.delete("/:id", (req, res) => {
-  Class.findOneAndRemove({ _id: req.params.id })
-    .then((classDelete) => {
-      if (!classDelete)
-        return res.status(404).send({ message: "Class not found" });
-      res.send({ classDelete });
-    })
-    .catch((error) => {
-      res.status(500).send({ message: error.message });
-    });
+router.delete("/:id", async (req, res) => {
+  try {
+    const classDelete = await Class.findOneAndRemove({ _id: req.params.id });
+    if (!classDelete) {
+      return res.status(404).send({ message: "Class not found" });
+    }
+    res.send({ classDelete });
+  } catch (error) {
+    res.status(500).send({ message: error.message });
+  }
 });
 
 module.exports = router;

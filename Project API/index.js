@@ -13,10 +13,19 @@ require("./config/passport")(passport);
 const db = require("./config/keys").mongoURI;
 
 // Koneksi mongodb
-mongoose
-  .connect(db, { useNewUrlParser: true, useUnifiedTopology: true })
-  .then(() => console.log("MongoDB Connected"))
-  .catch((err) => console.log(err));
+async function connect() {
+  try {
+    await mongoose.connect(db, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+    console.log("MongoDB Connected");
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+connect();
 
 // json middleware
 app.use(express.json());
@@ -49,5 +58,6 @@ app.use("/usercourse", require("./routes/user_course"));
 
 const PORT = process.env.PORT || 5000;
 
-
-app.listen(PORT, console.log(`Server running on  ${PORT}`));
+app.listen(PORT, () => {
+  console.log(`Server running on ${PORT}`);
+});

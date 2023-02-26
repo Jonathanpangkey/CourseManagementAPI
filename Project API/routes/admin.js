@@ -2,55 +2,39 @@ const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcryptjs");
 const passport = require("passport");
-// Load Admin model/skema
 const Admin = require("../models/Admin");
 
-// Register
-router.post("/register", (req, res) => {
+router.post("/register", async (req, res) => {
   const { name, email, password } = req.body;
-  Admin.findOne({ email: email }).then((user) => {
+  try {
+    const user = await Admin.findOne({ email });
     if (user) {
-      res.status(400).json({ message: "Email already exists." });
-    } else {
-      const newUser = new Admin({
-        name,
-        email,
-        password,
-      });
-      // meng enksripsi password
-      bcrypt.genSalt(10, (err, salt) => {
-        bcrypt.hash(newUser.password, salt, (err, hash) => {
-          if (err) throw err;
-          newUser.password = hash;
-          newUser
-            .save()
-            .then((user) => {
-              res.send(user);
-            })
-            .catch((err) => console.log(err));
-        });
-      });
+      return res.status(400).json({ message: "Email already exists." });
     }
-  });
+    const newUser = new Admin({ name, email, password });
+    const salt = await bcrypt.genSalt(10);
+    const hash = await bcrypt.hash(newUser.password, salt);
+    newUser.password = hash;
+    const savedUser = await newUser.save();
+    res.send(savedUser);
+  } catch (err) {
+    console.log(err);
+    res.status(500).send("Server Error");
+  }
 });
 
-// Login
 router.post("/login", (req, res, next) => {
   passport.authenticate("local", (err, user, info) => {
-    // jika terjadi error
     if (err) {
       return res.status(400).json({
         message: err,
       });
     }
-
     if (!user) {
       return res.status(400).json({
         message: info,
       });
     }
-
-    //   jika success
     return res.status(200).json({
       message: "Login Successful",
     });
