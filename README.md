@@ -7,7 +7,7 @@ This REST API serves as a backend for a course management system. It facilitates
 The API is built using Node.js and Express.js. It leverages MongoDB as the database and employs Mongoose as the ODM. Passport.js is used for authentication via JWT tokens.
 
 ## Endpoints and Routes
-This is the overall endpoint used in this REST API, you can test it using testing api tools like postman.
+This is the overall endpoint used in this REST API, you can test it using testing api tools like Postman.
 #### User Routes
 - `POST /users` - Create a new user.
 - `GET /users` - Retrieve all users.
