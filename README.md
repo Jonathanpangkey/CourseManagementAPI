@@ -8,7 +8,7 @@ The API is built using Node.js and Express.js. It leverages MongoDB as the datab
 
 ## Endpoints and Routes
 
-### User Routes
+#### User Routes
 - `POST /users` - Create a new user.
 - `GET /users` - Retrieve all users.
 - `GET /users/:id` - Retrieve a user by ID.
