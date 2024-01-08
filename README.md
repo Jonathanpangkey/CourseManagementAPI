@@ -1,51 +1,90 @@
-# REST API with Express js and Mongoose
+# RESTful API Documentation
 
-This is a REST API project built with Node.js and Mongoose. The project allows you to create, read, update, and delete data from MongoDB. The project includes five models:
-1. Admin registration and login
-3. Class categories
-4. Classes
-5. Participants
-6. Participant class access
+## Overview
+This REST API serves as a backend for a course management system. It facilitates user management, course creation, category handling, and user-course association.
 
-To run this project, you need to do the following:
+## Architecture
+The API is built using Node.js and Express.js. It leverages MongoDB as the database and employs Mongoose as the ODM. Passport.js is used for authentication via JWT tokens.
 
-1. Install Node.js and MongoDB on your device.
-3. Copy or clone the code in this repository.
-3. Run the npm install command to install all dependencies.
-4. Run the program with the command node index or if you have nodemon nodemon index.
-5. The server will run at http://localhost:5000.
+## Endpoints and Routes
 
-You can use Postman to test the API. Here are the available APIs:
+### User Routes
+- `POST /users` - Create a new user.
+- `GET /users` - Retrieve all users.
+- `GET /users/:id` - Retrieve a user by ID.
+- `PUT /users/:id` - Update a user by ID.
+- `DELETE /users/:id` - Delete a user by ID.
 
-## Admin registration and login
-        POST /admin/register To register.
-        POST /admin/login to login.
+#### Admin Routes
+- `POST /admin/register` - Register a new admin.
+- `POST /admin/login` - Log in as an admin.
 
-## Class categories
-        POST /category/add To add class categories.
-        GET /category To view all class categories.
-        GET /category/{id} To view a single class category.
-        PUT /category/{id} To update a class category.
-        DELETE /category/{id} To delete a class category.
+#### Course Routes
+- `POST /courses` - Create a new course.
+- `GET /courses` - Retrieve all courses.
+- `GET /courses/:id` - Retrieve a course by ID.
+- `PUT /courses/:id` - Update a course by ID.
+- `DELETE /courses/:id` - Delete a course by ID.
 
-## Classes
-        POST /courses To add classes.
-        GET /courses To view all classes.
-        GET /courses/{id} To view a single class.
-        PUT /courses/{id} To update a class.
-        DELETE /courses/{id} To delete a class.
+#### Course Category Routes
+- `GET /category` - Retrieve all course categories.
+- `GET /category/:id` - Retrieve a course category by ID.
+- `POST /category/add` - Add a new course category.
+- `PUT /category/:id` - Update a course category by ID.
+- `DELETE /category/:id` - Delete a course category by ID.
 
-## Participants
-        POST /users To add participants.
-        GET /users To view all participants.
-        GET /users/{id} To view a single participant.
-        PUT /users/{id} To update a participant.
-        DELETE /users/{id} To delete a participant.
+#### User-Course Routes
+- `POST /usercourse` - Create a new user-course association.
+- `GET /usercourse` - Retrieve all user-course associations.
+- `GET /usercourse/:userCourseId` - Retrieve a user-course association by ID.
+- `PUT /usercourse/:userCourseId` - Update a user-course association by ID.
+- `DELETE /usercourse/:userCourseId` - Delete a user-course association by ID.
 
-## Participant class access
-        POST /usercourse To add participant class access.
-        GET /usercourse To view all participant class access.
-        GET /usercourse/{id} To view a single participant class access.
-        PUT /usercourse/{id} To update a participant class access.
-        DELETE /usercourse/{id} To delete a participant class access.
+## Data Models
+- **User:** Contains fields for name, email, and password.
+- **Admin:** Similar to User model with admin-specific functionalities.
+- **Class:** Represents a course with a title and a reference to ClassCategory.
+- **ClassCategory:** Describes the categories for different courses.
+- **UserCourse:** Maintains associations between users and courses.
 
+## Usage/Examples
+Below are sample API usage scenarios in JavaScript (Node.js) utilizing the routes via HTTP requests.
+
+```javascript
+// Sample HTTP requests using libraries like Axios or Node's built-in HTTP/HTTPS
+
+// Create a user
+axios.post('/users', { name: 'John Doe', email: 'john@example.com', password: 'password' })
+  .then(response => {
+    console.log('New user created:', response.data.savedUser);
+  })
+  .catch(error => {
+    console.error('Error creating user:', error);
+  });
+
+// Retrieve all courses
+axios.get('/courses')
+  .then(response => {
+    console.log('All courses:', response.data.classes);
+  })
+  .catch(error => {
+    console.error('Error retrieving courses:', error);
+  });
+
+// Update a course
+axios.put('/courses/:id', { title: 'Updated Title' })
+  .then(response => {
+    console.log('Course updated:', response.data.classUpdate);
+  })
+  .catch(error => {
+    console.error('Error updating course:', error);
+  });
+
+// Delete a user-course association
+axios.delete('/usercourse/:userCourseId')
+  .then(response => {
+    console.log('User-course association deleted:', response.data.result);
+  })
+  .catch(error => {
+    console.error('Error deleting user-course association:', error);
+  });
