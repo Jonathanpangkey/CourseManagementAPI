@@ -88,3 +88,14 @@ axios.delete('/usercourse/:userCourseId')
   .catch(error => {
     console.error('Error deleting user-course association:', error);
   });
+
+
+```
+## How to Use
+To use this API, follow these steps:
+
+1. Clone this repository.
+2. Install dependencies using `npm install`.
+3. Set up a MongoDB database and update the connection string in `config/keys.js`.
+4. Start the server using `npm start`.
+
