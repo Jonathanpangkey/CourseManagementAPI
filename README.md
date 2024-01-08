@@ -7,7 +7,7 @@ This REST API serves as a backend for a course management system. It facilitates
 The API is built using Node.js and Express.js. It leverages MongoDB as the database and employs Mongoose as the ODM. Passport.js is used for authentication via JWT tokens.
 
 ## Endpoints and Routes
-
+This is the overall endpoint used in this REST API, you can test it using testing api tools like postman.
 #### User Routes
 - `POST /users` - Create a new user.
 - `GET /users` - Retrieve all users.
@@ -47,50 +47,7 @@ The API is built using Node.js and Express.js. It leverages MongoDB as the datab
 - **ClassCategory:** Describes the categories for different courses.
 - **UserCourse:** Maintains associations between users and courses.
 
-## Usage/Examples
-Below are sample API usage scenarios in JavaScript (Node.js) utilizing the routes via HTTP requests.
 
-```javascript
-// Sample HTTP requests using libraries like Axios or Node's built-in HTTP/HTTPS
-
-// Create a user
-axios.post('/users', { name: 'John Doe', email: 'john@example.com', password: 'password' })
-  .then(response => {
-    console.log('New user created:', response.data.savedUser);
-  })
-  .catch(error => {
-    console.error('Error creating user:', error);
-  });
-
-// Retrieve all courses
-axios.get('/courses')
-  .then(response => {
-    console.log('All courses:', response.data.classes);
-  })
-  .catch(error => {
-    console.error('Error retrieving courses:', error);
-  });
-
-// Update a course
-axios.put('/courses/:id', { title: 'Updated Title' })
-  .then(response => {
-    console.log('Course updated:', response.data.classUpdate);
-  })
-  .catch(error => {
-    console.error('Error updating course:', error);
-  });
-
-// Delete a user-course association
-axios.delete('/usercourse/:userCourseId')
-  .then(response => {
-    console.log('User-course association deleted:', response.data.result);
-  })
-  .catch(error => {
-    console.error('Error deleting user-course association:', error);
-  });
-
-
-```
 ## How to Use
 To use this API, follow these steps:
 
