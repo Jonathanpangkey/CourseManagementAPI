@@ -42,7 +42,7 @@ This is the overall endpoint used in this REST API, you can test it using testin
 
 ## Data Models
 - **User:** Contains fields for name, email, and password.
-- **Admin:** Similar to User model with admin-specific functionalities.
+- **Admin:** Similar to User model.
 - **Class:** Represents a course with a title and a reference to ClassCategory.
 - **ClassCategory:** Describes the categories for different courses.
 - **UserCourse:** Maintains associations between users and courses.
